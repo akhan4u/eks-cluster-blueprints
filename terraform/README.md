@@ -99,7 +99,7 @@
 | <a name="output_eks_connect"></a> [eks\_connect](#output\_eks\_connect) | Configure kubectl: make sure you're logged in with the correct AWS profile and run the following command to update your kubeconfig |
 | <a name="output_harbor_admin_password"></a> [harbor\_admin\_password](#output\_harbor\_admin\_password) | Harbor UI Admin Password |
 | <a name="output_harbor_iam_user"></a> [harbor\_iam\_user](#output\_harbor\_iam\_user) | Harbor's IAM User for S3 Access |
-| <a name="output_harbor_iam_user_secretmanager_secret"></a> [harbor\_iam\_user\_secretmanager\_secret](#output\_harbor\_iam\_user\_secretmanager\_secret) | Harbor's IAM User SecretManager Secret ARN |
-| <a name="output_harbor_rds_pg_master_connection"></a> [harbor\_rds\_pg\_master\_connection](#output\_harbor\_rds\_pg\_master\_connection) | Harbor RDS Instance Secret Resource |
+| <a name="output_harbor_iam_user_secretmanager_secret"></a> [harbor\_iam\_user\_secretmanager\_secret](#output\_harbor\_iam\_user\_secretmanager\_secret) | SecretManager Secret of Harbor's IAM User for connecting to S3 bucket (Artifact Store) |
+| <a name="output_harbor_rds_pg_master_connection_secret"></a> [harbor\_rds\_pg\_master\_connection\_secret](#output\_harbor\_rds\_pg\_master\_connection\_secret) | SecretManager Secret of Harbor's RDS DB Instance (Datastore) |
 | <a name="output_harbor_s3_bucket"></a> [harbor\_s3\_bucket](#output\_harbor\_s3\_bucket) | Harbor S3 Bucket |
 | <a name="output_password_harbor"></a> [password\_harbor](#output\_password\_harbor) | Your password for first-time console login |

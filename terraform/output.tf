@@ -30,7 +30,7 @@ output "harbor_iam_user_secretmanager_secret" {
   value       = aws_secretsmanager_secret.harbor_iam_user_keys.name
 }
 
-output "harbor_rds_pg_master_connection" {
-  description = "SecretManager Secret of Harbor DB RDS Instance (Datastore)"
+output "harbor_rds_pg_master_connection_secret" {
+  description = "SecretManager Secret of Harbor's RDS DB Instance (Datastore)"
   value       = aws_secretsmanager_secret.harbor_pg_master_connection.name
 }
