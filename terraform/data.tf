@@ -8,6 +8,10 @@ data "aws_iam_policy" "administrator" {
   name = "AdministratorAccess"
 }
 
+data "aws_acm_certificate" "wildcard" {
+  domain = "ignitescale.com"
+}
+
 data "aws_route53_zone" "bootstrap_domain" {
   name = var.root_domain
 }
