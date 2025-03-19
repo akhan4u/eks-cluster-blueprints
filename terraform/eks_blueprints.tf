@@ -37,9 +37,6 @@ module "eks_blueprints_addons" {
       <<-EOT
       provider:
         name: aws
-      serviceAccount:
-        annotations:
-          eks.amazonaws.com/role-arn: ${module.external_dns_irsa.iam_role_arn}
     EOT
     ]
   }
@@ -55,9 +52,7 @@ module "eks_blueprints_addons" {
     # Values: https://github.com/external-secrets/external-secrets/blob/helm-chart-0.14.4/deploy/charts/external-secrets/values.yaml
     values = [
       <<-EOT
-      serviceAccount:
-        annotations:
-          eks.amazonaws.com/role-arn: ${module.external_secrets_irsa.iam_role_arn}
+      # Your values go here
     EOT
     ]
     external_secrets_secrets_manager_arns = [
@@ -78,8 +73,6 @@ module "eks_blueprints_addons" {
       serviceAccount:
         create: true
         name: cert-manager-acme-dns01-route53
-        annotations:
-          eks.amazonaws.com/role-arn: ${module.cert_manager_irsa.iam_role_arn}
       # the securityContext is required, so the pod can access files required to assume the IAM role
       securityContext:
         fsGroup: 1001
