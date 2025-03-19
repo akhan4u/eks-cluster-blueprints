@@ -9,7 +9,10 @@ data "aws_iam_policy" "administrator" {
 }
 
 data "aws_acm_certificate" "wildcard" {
-  domain = "ignitescale.com"
+  domain      = "ignitescale.com"
+  statuses    = ["EXPIRED"]
+  types       = ["IMPORTED"]
+  most_recent = true
 }
 
 data "aws_route53_zone" "bootstrap_domain" {
