@@ -1,0 +1,107 @@
+# Values: https://github.com/kubernetes/ingress-nginx/blob/helm-chart-4.12.0/charts/ingress-nginx/values.yaml
+global:
+  image:
+    registry: registry.k8s.io
+serviceAccount:
+  create: true
+  automountServiceAccountToken: false
+fullnameOverride: ingress-nginx
+controller:
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+    prometheusRule:
+      enabled: false
+  extraVolumes:
+    - name: kube-api-access-cm
+      projected:
+        defaultMode: 420
+        sources:
+          - serviceAccountToken:
+              expirationSeconds: 3607
+              path: token
+          - configMap:
+              items:
+                - key: ca.crt
+                  path: ca.crt
+              name: kube-root-ca.crt
+          - downwardAPI:
+              items:
+                - fieldRef:
+                    apiVersion: v1
+                    fieldPath: metadata.namespace
+                  path: namespace
+  extraVolumeMounts:
+    - name: kube-api-access-cm
+      mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      readOnly: true
+  ingressClassResource:
+    controllerValue: k8s.io/ingress-nginx
+    default: true
+    enabled: true
+    name: ingress-nginx
+  config:
+    client-body-buffer-size: 100M
+    client-body-timeout: 120
+    client-header-timeout: 120
+    enable-brotli: "true"
+    enable-real-ip: "true"
+    hsts-max-age: 31449600
+    keep-alive-requests: 10000
+    keep-alive: 120
+    log-format-escape-json: "true"
+    log-format-upstream: >
+      {"time": "$time_iso8601", "remote_addr": "$proxy_protocol_addr", "x_forwarded_for": "$proxy_add_x_forwarded_for",
+      "request_id": "$req_id", "remote_user": "$remote_user", "bytes_sent": $bytes_sent, "request_time": $request_time,
+      "status": $status, "vhost": "$host", "request_proto": "$server_protocol", "path": "$uri", "request_query": "$args",
+      "request_length": $request_length, "duration": $request_time, "method": "$request_method", "http_referrer": "$http_referer",
+      "http_user_agent": "$http_user_agent"}
+    proxy-body-size: 0
+    proxy-buffer-size: 16k
+    ssl-protocols: TLSv1.3 TLSv1.2
+  minAvailable: 1
+  service:
+    type: LoadBalancer
+    # externalTrafficPolicy: Local
+      # nginx.ingress.kubernetes.io/force-ssl-redirect: "true" - once cert-manager is configured
+  autoscaling:
+    enabled: false
+    minReplicas: 3
+    maxReplicas: 5
+    targetCPUUtilizationPercentage: 90
+    targetMemoryUtilizationPercentage: 90
+  podSecurityContext:
+    runAsNonRoot: true
+    runAsUser: 65532
+    runAsGroup: 65532
+    seccompProfile:
+      type: 'RuntimeDefault'
+    readOnlyRootFilesystem: true
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - ALL
+  topologySpreadConstraints:
+    - maxSkew: 1
+      topologyKey: kubernetes.io/hostname
+      whenUnsatisfiable: DoNotSchedule
+      labelSelector:
+        matchLabels:
+          app.kubernetes.io/name: ingress-nginx
+          app.kubernetes.io/instance: ingress-nginx
+          app.kubernetes.io/component: controller
+
+  # nodeSelector:
+  #   "ingress-ready": "true"
+  # tolerations:
+  #   - key: "ingress"
+  #     operator: "Equal"
+  #     value: "true"
+  #     effect: "NoSchedule"
+  # resources:
+  #   requests:
+  #     cpu: 50m
+  #     memory: 156Mi
+  #   limits:
+  #     memory: 256Mi
