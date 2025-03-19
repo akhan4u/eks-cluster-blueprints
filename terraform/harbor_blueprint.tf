@@ -46,7 +46,7 @@ module "eks_blueprints_addon" {
           s3:
             # Set an existing secret for S3 accesskey and secretkey
             # keys in the secret should be REGISTRY_STORAGE_S3_ACCESSKEY and REGISTRY_STORAGE_S3_SECRETKEY for registry
-            existingSecret: harbor-s3-secret
+            existingSecret: ${local.harbor_s3_external_secret_output.spec.target.name}
             region: "${var.aws_region}"
             bucket: "${aws_s3_bucket.harbor.id}"
       database:
@@ -58,7 +58,7 @@ module "eks_blueprints_addon" {
           # 'registry' database with UTF8 encoding must already exist
           coreDatabase: "${aws_db_instance.harbor.db_name}"
           # if using existing secret, the key must be "password"
-          existingSecret: harbor-rds-secret
+          existingSecret: ${local.harbor_rds_external_secret_output.spec.target.name}
           sslmode: "require"
       metrics:
         enabled: true
