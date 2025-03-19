@@ -1,7 +1,7 @@
 variable "aws_region" {
   description = "The region where the infrastructure should be deployed to"
   type        = string
-  default     = "us-west-1"
+  default     = "us-east-1"
 }
 
 variable "root_domain" {
@@ -22,7 +22,7 @@ variable "deploy_stage" {
 
   Options:
   - dev
-  - chimera
+  - staging
   - prod
 
   Default: dev
@@ -31,7 +31,7 @@ variable "deploy_stage" {
   type        = string
 
   validation {
-    condition     = can(regex("^dev$|^chimera$|^prod$", var.deploy_stage))
+    condition     = can(regex("^dev$|^staging$|^prod$", var.deploy_stage))
     error_message = "Error: Invalid Environment."
   }
 }
