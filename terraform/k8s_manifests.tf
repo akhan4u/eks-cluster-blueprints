@@ -3,7 +3,7 @@ resource "kubectl_manifest" "harbor_namespace" {
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: harbor-new
+  name: harbor
 YAML
 }
 
