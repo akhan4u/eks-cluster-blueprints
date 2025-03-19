@@ -8,6 +8,8 @@
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | 1.9.3 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5 |
+| <a name="requirement_helm"></a> [helm](#requirement\_helm) | 2.17.0 |
+| <a name="requirement_kubectl"></a> [kubectl](#requirement\_kubectl) | 1.19.0 |
 | <a name="requirement_pgp"></a> [pgp](#requirement\_pgp) | 0.2.4 |
 | <a name="requirement_random"></a> [random](#requirement\_random) | 3.7.1 |
 
@@ -16,6 +18,7 @@
 | Name | Version |
 |------|---------|
 | <a name="provider_aws"></a> [aws](#provider\_aws) | 5.91.0 |
+| <a name="provider_kubectl"></a> [kubectl](#provider\_kubectl) | 1.19.0 |
 | <a name="provider_pgp"></a> [pgp](#provider\_pgp) | 0.2.4 |
 | <a name="provider_random"></a> [random](#provider\_random) | 3.7.1 |
 
@@ -25,6 +28,7 @@
 |------|--------|---------|
 | <a name="module_ebs_csi_driver_irsa"></a> [ebs\_csi\_driver\_irsa](#module\_ebs\_csi\_driver\_irsa) | terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks | ~> 5.30 |
 | <a name="module_eks"></a> [eks](#module\_eks) | terraform-aws-modules/eks/aws | ~> 20.31 |
+| <a name="module_eks_blueprints_addon"></a> [eks\_blueprints\_addon](#module\_eks\_blueprints\_addon) | aws-ia/eks-blueprints-addon/aws | 1.1.1 |
 | <a name="module_eks_blueprints_addons"></a> [eks\_blueprints\_addons](#module\_eks\_blueprints\_addons) | aws-ia/eks-blueprints-addons/aws | ~> 1.20.0 |
 | <a name="module_vpc"></a> [vpc](#module\_vpc) | terraform-aws-modules/vpc/aws | 5.19.0 |
 
@@ -47,8 +51,14 @@
 | [aws_secretsmanager_secret_version.harbor_pg_master_connection](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret_version) | resource |
 | [aws_security_group.harbor_database](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_vpc_endpoint.s3](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint) | resource |
+| [kubectl_manifest.cluster_secret_store](https://registry.terraform.io/providers/gavinbunney/kubectl/1.19.0/docs/resources/manifest) | resource |
+| [kubectl_manifest.harbor_namespace](https://registry.terraform.io/providers/gavinbunney/kubectl/1.19.0/docs/resources/manifest) | resource |
+| [kubectl_manifest.harbor_rds_external_secret](https://registry.terraform.io/providers/gavinbunney/kubectl/1.19.0/docs/resources/manifest) | resource |
+| [kubectl_manifest.harbor_s3_external_secret](https://registry.terraform.io/providers/gavinbunney/kubectl/1.19.0/docs/resources/manifest) | resource |
 | [pgp_key.harbor](https://registry.terraform.io/providers/ekristen/pgp/0.2.4/docs/resources/key) | resource |
+| [random_password.harbor_admin_password](https://registry.terraform.io/providers/hashicorp/random/3.7.1/docs/resources/password) | resource |
 | [random_password.master_password](https://registry.terraform.io/providers/hashicorp/random/3.7.1/docs/resources/password) | resource |
+| [aws_acm_certificate.wildcard](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/acm_certificate) | data source |
 | [aws_availability_zones.azs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/availability_zones) | data source |
 | [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
 | [aws_eks_cluster_auth.cluster_auth](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/eks_cluster_auth) | data source |
@@ -87,6 +97,7 @@
 | Name | Description |
 |------|-------------|
 | <a name="output_eks_connect"></a> [eks\_connect](#output\_eks\_connect) | Configure kubectl: make sure you're logged in with the correct AWS profile and run the following command to update your kubeconfig |
+| <a name="output_harbor_admin_password"></a> [harbor\_admin\_password](#output\_harbor\_admin\_password) | Harbor UI Admin Password |
 | <a name="output_harbor_iam_user"></a> [harbor\_iam\_user](#output\_harbor\_iam\_user) | Harbor's IAM User for S3 Access |
 | <a name="output_harbor_iam_user_secretmanager_secret"></a> [harbor\_iam\_user\_secretmanager\_secret](#output\_harbor\_iam\_user\_secretmanager\_secret) | Harbor's IAM User SecretManager Secret ARN |
 | <a name="output_harbor_rds_pg_master_connection"></a> [harbor\_rds\_pg\_master\_connection](#output\_harbor\_rds\_pg\_master\_connection) | Harbor RDS Instance Secret Resource |

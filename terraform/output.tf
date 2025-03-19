@@ -14,6 +14,12 @@ output "password_harbor" {
   sensitive   = false
 }
 
+output "harbor_admin_password" {
+  description = "Harbor UI Admin Password"
+  value       = random_password.harbor_admin_password.result
+  sensitive   = true
+}
+
 output "harbor_iam_user_secretmanager_secret" {
   description = "Harbor's IAM User SecretManager Secret ARN"
   value       = aws_secretsmanager_secret.harbor_iam_user_keys.arn
