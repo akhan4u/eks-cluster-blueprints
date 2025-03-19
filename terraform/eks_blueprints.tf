@@ -50,11 +50,7 @@ module "eks_blueprints_addons" {
     namespace        = "external-secrets"
     create_namespace = true
     # Values: https://github.com/external-secrets/external-secrets/blob/helm-chart-0.14.4/deploy/charts/external-secrets/values.yaml
-    values = [
-      <<-EOT
-      # Your values go here
-    EOT
-    ]
+    values = [templatefile("${path.module}/helm_values/external_secrets.yaml", {})]
   }
   external_secrets_secrets_manager_arns = [
     aws_secretsmanager_secret.harbor_pg_master_connection.arn,
