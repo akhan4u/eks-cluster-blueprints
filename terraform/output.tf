@@ -20,17 +20,17 @@ output "harbor_admin_password" {
   sensitive   = true
 }
 
-output "harbor_iam_user_secretmanager_secret" {
-  description = "Harbor's IAM User SecretManager Secret ARN"
-  value       = aws_secretsmanager_secret.harbor_iam_user_keys.arn
-}
-
 output "harbor_s3_bucket" {
   description = "Harbor S3 Bucket"
   value       = aws_s3_bucket.harbor.id
 }
 
+output "harbor_iam_user_secretmanager_secret" {
+  description = "SecretManager Secret of Harbor's IAM User for connecting to S3 bucket (Artifact Store)"
+  value       = aws_secretsmanager_secret.harbor_iam_user_keys.name
+}
+
 output "harbor_rds_pg_master_connection" {
-  description = "Harbor RDS Instance Secret Resource"
-  value       = aws_secretsmanager_secret.harbor_pg_master_connection.arn
+  description = "SecretManager Secret of Harbor DB RDS Instance (Datastore)"
+  value       = aws_secretsmanager_secret.harbor_pg_master_connection.name
 }
