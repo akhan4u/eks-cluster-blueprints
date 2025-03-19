@@ -60,6 +60,10 @@ module "eks_blueprints_addons" {
           eks.amazonaws.com/role-arn: ${module.external_secrets_irsa.iam_role_arn}
     EOT
     ]
+    external_secrets_secrets_manager_arns = [
+      aws_secretsmanager_secret.harbor_pg_master_connection.arn,
+      aws_secretsmanager_secret.harbor_iam_user_keys.arn
+    ]
   }
 
   enable_cert_manager = true
