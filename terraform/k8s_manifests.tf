@@ -3,7 +3,7 @@ resource "kubectl_manifest" "cluster_secret_store" {
 apiVersion: external-secrets.io/v1beta1
 kind: ClusterSecretStore
 metadata:
-  name: clustersecretstore-aws
+  name: aws-css
 spec:
   provider:
     aws:
