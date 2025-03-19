@@ -1,6 +1,6 @@
 # Terraform Config for Harbor
 
-![Harbor on AWS EKS](./harbor.png)
+![Harbor on AWS EKS](./architecture.png)
 
 ## Requirements
 
