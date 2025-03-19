@@ -90,6 +90,7 @@ module "cert_manager_irsa" {
   role_name                     = "${local.cluster_name}-irsa-cert-manager"
   attach_cert_manager_policy    = true
   cert_manager_hosted_zone_arns = [data.aws_route53_zone.bootstrap_domain.arn]
+
   oidc_providers = {
     main = {
       provider_arn               = module.eks.oidc_provider_arn
