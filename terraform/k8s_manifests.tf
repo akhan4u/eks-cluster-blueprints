@@ -1,77 +1,31 @@
 resource "kubectl_manifest" "harbor_namespace" {
-  yaml_body = <<YAML
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: harbor
-YAML
+  yaml_body  = templatefile("${path.module}/config/namespace.yaml", {})
+  depends_on = [module.eks_blueprints_addons]
 }
 
 resource "kubectl_manifest" "cluster_secret_store" {
-  yaml_body = <<YAML
-apiVersion: external-secrets.io/v1beta1
-kind: ClusterSecretStore
-metadata:
-  name: aws-css
-spec:
-  provider:
-    aws:
-      service: SecretsManager
-      region: ${var.aws_region}
-      auth:
-        jwt:
-          serviceAccountRef:
-            name: ${local.external_secrets_output.serviceAccount.name}
-            namespace: ${module.eks_blueprints_addons.external_secrets.namespace}
-YAML
+  yaml_body = templatefile("${path.module}/config/cluster_secret_store.yaml", {
+    region               = var.aws_region
+    service_account_name = local.external_secrets_output.serviceAccount.name
+    namespace            = module.eks_blueprints_addons.external_secrets.namespace
+  })
+  depends_on = [kubectl_manifest.harbor_namespace]
 }
 
 resource "kubectl_manifest" "harbor_s3_external_secret" {
-  yaml_body = <<YAML
-apiVersion: external-secrets.io/v1beta1
-kind: ExternalSecret
-metadata:
-  name: harbor-s3-external-secret
-  namespace: ${kubectl_manifest.harbor_namespace.name}
-spec:
-  refreshInterval: 1h
-  secretStoreRef:
-    name: ${kubectl_manifest.cluster_secret_store.name}
-    kind: ClusterSecretStore
-  target:
-    name: harbor-s3-secret
-    creationPolicy: Owner
-  data:
-  - secretKey: REGISTRY_STORAGE_S3_ACCESSKEY
-    remoteRef:
-      key: ${aws_secretsmanager_secret.harbor_iam_user_keys.name}
-      property: AWS_ACCESS_KEY_ID
-  - secretKey: REGISTRY_STORAGE_S3_SECRETKEY
-    remoteRef:
-      key: ${aws_secretsmanager_secret.harbor_iam_user_keys.name}
-      property: AWS_SECRET_ACCESS_KEY
-YAML
+  yaml_body = templatefile("${path.module}/config/s3_external_secret.yaml", {
+    namespace            = kubectl_manifest.harbor_namespace.name
+    cluster_secret_store = kubectl_manifest.cluster_secret_store.name
+    harbor_iam_secret    = aws_secretsmanager_secret.harbor_iam_user_keys.name
+  })
+  depends_on = [kubectl_manifest.cluster_secret_store]
 }
 
 resource "kubectl_manifest" "harbor_rds_external_secret" {
-  yaml_body = <<YAML
-apiVersion: external-secrets.io/v1beta1
-kind: ExternalSecret
-metadata:
-  name: harbor-rds-external-secret
-  namespace: ${kubectl_manifest.harbor_namespace.name}
-spec:
-  refreshInterval: 1h
-  secretStoreRef:
-    name: ${kubectl_manifest.cluster_secret_store.name}
-    kind: ClusterSecretStore
-  target:
-    name: harbor-rds-secret
-    creationPolicy: Owner
-  data:
-  - secretKey: password
-    remoteRef:
-      key: ${aws_secretsmanager_secret.harbor_pg_master_connection.name}
-      property: password
-YAML
+  yaml_body = templatefile("${path.module}/config/rds_external_secret.yaml", {
+    namespace            = kubectl_manifest.harbor_namespace.name
+    cluster_secret_store = kubectl_manifest.cluster_secret_store.name
+    harbor_rds_secret    = aws_secretsmanager_secret.harbor_pg_master_connection.name
+  })
+  depends_on = [kubectl_manifest.harbor_s3_external_secret]
 }
