@@ -8,6 +8,7 @@ module "eks_blueprints_addon" {
   description   = "Harbor helm Chart deployment configuration"
   namespace     = "harbor"
 
+  # Values: https://github.com/goharbor/harbor-helm/blob/v1.16.2/values.yaml
   values = [
     <<-EOT
       expose:
@@ -28,6 +29,7 @@ module "eks_blueprints_addon" {
             external-dns.alpha.kubernetes.io/hostname: harbor.ignitescale.com
             service.beta.kubernetes.io/aws-load-balancer-ssl-cert: "${data.aws_acm_certificate.wildcard.arn}"
       externalURL: https://harbor.ignitescale.com
+      harborAdminPassword: "${random_password.harbor_admin_password.result}"
       persistence:
         enabled: false
         resourcePolicy: "keep"

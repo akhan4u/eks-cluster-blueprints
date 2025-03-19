@@ -32,6 +32,15 @@ resource "random_password" "master_password" {
   special = false
 }
 
+resource "random_password" "harbor_admin_password" {
+  length  = 16
+  upper   = true
+  lower   = true
+  special = true
+  # Don't allow $ or " in the character list, as the value is used in json and string interpolation
+  override_special = "'!@#%^&*()-_=+[]{};:',<.>/?|`~"
+}
+
 resource "aws_secretsmanager_secret" "harbor_pg_master_connection" {
   name = "${var.deploy_stage}_rds_pg_master_connection_harbor"
 }
