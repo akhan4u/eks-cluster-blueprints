@@ -7,17 +7,7 @@ variable "aws_region" {
 variable "root_domain" {
   description = "The TLD of the DNS to use for this deployment"
   type        = string
-}
-
-variable "domain_type" {
-  description = "Intermediate domain type"
-  type        = string
-  default     = "c"
-}
-
-variable "letsencrypt_secret" {
-  description = "The Name of AWS SecretsManager secret for LetsEncrypt Configuration"
-  type        = string
+  default     = "ignitescale.com"
 }
 
 variable "enable_vpc_endpoint" {
@@ -120,13 +110,13 @@ variable "private_subnets" {
 variable "team" {
   description = "team that owns application (for tagging purposes)"
   type        = string
-  default     = "ionet-k8s"
+  default     = "Ak"
 }
 
 variable "terraform_gitpath" {
   description = "The location in source control where the terraform directory exists (for tagging purposes)"
   type        = string
-  default     = "ionet-k8s/terraform-shared-services/terraform"
+  default     = "terraform"
 }
 
 variable "vpc_name" {

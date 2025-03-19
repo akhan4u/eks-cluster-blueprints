@@ -75,7 +75,7 @@ module "eks_blueprints_addons" {
     EOT
     ]
   }
-  external_dns_route53_zone_arns = [data.aws_route53_zone.intermediate_domain.arn]
+  external_dns_route53_zone_arns = [data.aws_route53_zone.bootstrap_domain.arn]
 
   enable_external_secrets = true
   external_secrets = {
@@ -115,7 +115,7 @@ module "eks_blueprints_addons" {
     EOT
     ]
   }
-  cert_manager_route53_hosted_zone_arns = [data.aws_route53_zone.intermediate_domain.arn]
+  cert_manager_route53_hosted_zone_arns = [data.aws_route53_zone.bootstrap_domain.arn]
 
   enable_ingress_nginx = true
   ingress_nginx = {
@@ -152,7 +152,7 @@ module "external_dns_irsa" {
 
   role_name                     = "${local.cluster_name}-irsa-external-dns"
   attach_external_dns_policy    = true
-  external_dns_hosted_zone_arns = [data.aws_route53_zone.intermediate_domain.arn]
+  external_dns_hosted_zone_arns = [data.aws_route53_zone.bootstrap_domain.arn]
 
   oidc_providers = {
     main = {
@@ -170,8 +170,7 @@ module "external_secrets_irsa" {
   attach_external_secrets_policy = true
   external_secrets_secrets_manager_arns = [
     aws_secretsmanager_secret.harbor_pg_master_connection.arn,
-    aws_secretsmanager_secret.harbor_iam_user_keys.arn,
-    data.aws_secretsmanager_secret.letsencrypt.arn
+    aws_secretsmanager_secret.harbor_iam_user_keys.arn
   ]
   external_secrets_secrets_manager_create_permission = false
 
@@ -189,7 +188,7 @@ module "cert_manager_irsa" {
 
   role_name                     = "${local.cluster_name}-irsa-cert-manager"
   attach_cert_manager_policy    = true
-  cert_manager_hosted_zone_arns = [data.aws_route53_zone.intermediate_domain.arn]
+  cert_manager_hosted_zone_arns = [data.aws_route53_zone.bootstrap_domain.arn]
 
   oidc_providers = {
     main = {
