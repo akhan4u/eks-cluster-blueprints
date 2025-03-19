@@ -19,8 +19,8 @@ module "eks_blueprints_addon" {
           hosts:
             core: harbor.ignitescale.com
           controller: default
+          className: "ingress-nginx"
           annotations:
-            kubernetes.io/ingress.class: ingress-nginx
             ingress.kubernetes.io/ssl-redirect: "true"
             ingress.kubernetes.io/proxy-body-size: "0"
             nginx.ingress.kubernetes.io/ssl-redirect: "true"
