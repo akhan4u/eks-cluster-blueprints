@@ -63,7 +63,7 @@ module "eks_blueprints_addons" {
   }
 
   enable_cert_manager = true
-  cert-manager = {
+  cert_manager = {
     chart_version    = "v1.17.1"
     namespace        = "cert-manager"
     create_namespace = true
@@ -93,6 +93,6 @@ module "eks_blueprints_addons" {
     namespace        = "ingress-nginx"
     create_namespace = true
     # Values: https://github.com/kubernetes/ingress-nginx/blob/helm-chart-4.12.0/charts/ingress-nginx/values.yaml
-    values = [templatefile("${path.module}/helm_values/ingres_nginx.yaml", {})]
+    values = [templatefile("${path.module}/helm_values/ingress_nginx.yaml", {})]
   }
 }
