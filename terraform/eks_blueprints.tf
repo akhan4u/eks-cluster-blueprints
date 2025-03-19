@@ -36,7 +36,7 @@ module "eks_blueprints_addons" {
     values = [
       <<-EOT
       provider:
-      name: aws
+        name: aws
       serviceAccount:
         annotations:
           eks.amazonaws.com/role-arn: ${module.external_dns_irsa.iam_role_arn}
@@ -70,8 +70,7 @@ module "eks_blueprints_addons" {
     # Values: https://github.com/cert-manager/cert-manager/blob/v1.17.1/deploy/charts/cert-manager/values.yaml
     values = [
       <<-EOT
-      crds:
-        enabled: true
+      installCRDs: true
       serviceAccount:
         create: true
         name: cert-manager-acme-dns01-route53
