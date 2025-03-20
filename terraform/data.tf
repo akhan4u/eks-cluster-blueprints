@@ -18,9 +18,3 @@ data "aws_acm_certificate" "wildcard" {
 data "aws_route53_zone" "bootstrap_domain" {
   name = var.root_domain
 }
-
-# Discover the Cluster Token for Auth
-data "aws_eks_cluster_auth" "cluster_auth" {
-  depends_on = [module.eks.cluster_id]
-  name       = module.eks.cluster_name
-}
