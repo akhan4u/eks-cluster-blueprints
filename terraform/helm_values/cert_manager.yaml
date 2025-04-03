@@ -1,0 +1,7 @@
+# Values: https://github.com/cert-manager/cert-manager/blob/v1.17.1/deploy/charts/cert-manager/values.yaml
+installCRDs: true
+serviceAccount:
+  create: true
+# the securityContext is required, so the pod can access files required to assume the IAM role
+securityContext:
+  fsGroup: 1001

@@ -1,0 +1,24 @@
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: ${letsencrypt_account_email}
+    privateKeySecretRef:
+      name: letsencrypt
+    solvers:
+    - selector:
+        dnsZones:
+        - ${dns_zone}
+      dns01:
+        route53:
+          region: ${region}
+          hostedZoneID: ${dns_zone_id}
+          role: ${cert_manager_irsa}
+          auth:
+            kubernetes:
+              serviceAccountRef:
+                name: ${service_account_name}

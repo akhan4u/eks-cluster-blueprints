@@ -1,0 +1,5 @@
+# Values: https://github.com/kubernetes-sigs/aws-load-balancer-controller/blob/v2.12.0/helm/aws-load-balancer-controller/values.yaml
+enableServiceMutatorWebhook: false
+podDisruptionBudget:
+  maxUnavailable: 1
+vpcId: ${vpc_id}

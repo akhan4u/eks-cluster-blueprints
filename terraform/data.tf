@@ -8,13 +8,15 @@ data "aws_iam_policy" "administrator" {
   name = "AdministratorAccess"
 }
 
-data "aws_acm_certificate" "wildcard" {
-  domain      = "ignitescale.com"
-  statuses    = ["EXPIRED"]
-  types       = ["IMPORTED"]
-  most_recent = true
+data "aws_route53_zone" "intermediate_domain" {
+  name         = "${var.domain_type}.${var.deploy_stage}.${var.root_domain}"
+  private_zone = false
 }
 
-data "aws_route53_zone" "bootstrap_domain" {
-  name = var.root_domain
+data "aws_secretsmanager_secret" "letsencrypt" {
+  name = var.letsencrypt_secret
+}
+
+data "aws_secretsmanager_secret_version" "letsencrypt" {
+  secret_id = data.aws_secretsmanager_secret.letsencrypt.id
 }

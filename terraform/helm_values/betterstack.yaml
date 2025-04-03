@@ -1,0 +1,18 @@
+# Values: https://github.com/BetterStackHQ/logs-helm-chart/blob/main/values.yaml
+vector:
+  customConfig:
+    sinks:
+      better_stack_http_sink:
+        uri: "https://${betterstack_ingestion_host}/"
+        auth:
+          strategy: "bearer"
+          token: ${betterstack_logs_source_token}
+      better_stack_http_metrics_sink:
+        uri: "https://${betterstack_ingestion_host}/"
+        auth:
+          strategy: "bearer"
+          token: ${betterstack_logs_source_token}
+
+# Metrics server is already installed
+metrics-server:
+  enabled: false

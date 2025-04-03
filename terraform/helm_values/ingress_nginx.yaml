@@ -7,6 +7,9 @@ serviceAccount:
   automountServiceAccountToken: false
 fullnameOverride: ingress-nginx
 controller:
+  # IngressNightmare: CVE-2025-1097, CVE-2025-1098, CVE-2025-24514 and CVE-2025-1974
+  admissionWebhooks:
+    enabled: false
   metrics:
     enabled: true
     serviceMonitor:
@@ -62,9 +65,9 @@ controller:
     ssl-protocols: TLSv1.3 TLSv1.2
   minAvailable: 1
   service:
-    type: LoadBalancer
-    # externalTrafficPolicy: Local
-      # nginx.ingress.kubernetes.io/force-ssl-redirect: "true" - once cert-manager is configured
+    type: NodePort
+    annotations: {}
+      # Ref: https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.2/guide/service/annotations/#annotations
   autoscaling:
     enabled: false
     minReplicas: 3
@@ -91,17 +94,3 @@ controller:
           app.kubernetes.io/name: ingress-nginx
           app.kubernetes.io/instance: ingress-nginx
           app.kubernetes.io/component: controller
-
-  # nodeSelector:
-  #   "ingress-ready": "true"
-  # tolerations:
-  #   - key: "ingress"
-  #     operator: "Equal"
-  #     value: "true"
-  #     effect: "NoSchedule"
-  # resources:
-  #   requests:
-  #     cpu: 50m
-  #     memory: 156Mi
-  #   limits:
-  #     memory: 256Mi

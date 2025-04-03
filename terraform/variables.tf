@@ -1,13 +1,33 @@
 variable "aws_region" {
   description = "The region where the infrastructure should be deployed to"
   type        = string
-  default     = "us-east-1"
+  default     = "us-west-1"
+}
+
+variable "betterstack_ingestion_host" {
+  description = "Betterstack host to capture kubernetes logs [Source - shared-services-dev-eks]"
+  type        = string
+}
+
+variable "betterstack_logs_source_token" {
+  description = "Token to Capture logs on BetterStack [Source - shared-services-dev-eks]"
+  type        = string
 }
 
 variable "root_domain" {
   description = "The TLD of the DNS to use for this deployment"
   type        = string
-  default     = "ignitescale.com"
+}
+
+variable "domain_type" {
+  description = "Intermediate domain type"
+  type        = string
+  default     = "c"
+}
+
+variable "letsencrypt_secret" {
+  description = "The Name of AWS SecretsManager secret for LetsEncrypt Configuration"
+  type        = string
 }
 
 variable "enable_vpc_endpoint" {
@@ -18,11 +38,11 @@ variable "enable_vpc_endpoint" {
 
 variable "deploy_stage" {
   description = <<EOT
-  The environment short name to use for the deployed resources (for tagging purposes).
+  The environment short name to use for the deployed resources (for tagging purposes)
 
   Options:
   - dev
-  - staging
+  - chimera
   - prod
 
   Default: dev
@@ -31,7 +51,7 @@ variable "deploy_stage" {
   type        = string
 
   validation {
-    condition     = can(regex("^dev$|^staging$|^prod$", var.deploy_stage))
+    condition     = can(regex("^dev$|^chimera$|^prod$", var.deploy_stage))
     error_message = "Error: Invalid Environment."
   }
 }
@@ -92,7 +112,7 @@ variable "instance_type" {
   description = <<EOT
   AWS EKS Instance Type for Harbor
 
-  Reference: https://goharbor.io/docs/2.12.0/install-config/installation-prereqs/
+  Reference: https://goharbor.io/docs/2.12.0/install-config/installation-prereqs
   EOT
   type        = string
 }
@@ -108,15 +128,15 @@ variable "private_subnets" {
 }
 
 variable "team" {
-  description = "team that owns application (for tagging purposes)"
+  description = "Team that owns the application (for tagging purposes)"
   type        = string
-  default     = "Ak"
+  default     = "ionet-k8s"
 }
 
 variable "terraform_gitpath" {
-  description = "The location in source control where the terraform directory exists (for tagging purposes)"
+  description = "The location in source control where terraform code exists (for tagging purposes)"
   type        = string
-  default     = "terraform"
+  default     = "ionet-k8s/terraform-shared-services"
 }
 
 variable "vpc_name" {

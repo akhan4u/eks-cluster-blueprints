@@ -35,10 +35,9 @@ provider "aws" {
   }
 }
 
-# REF: https://registry.terraform.io/providers/ekristen/pgp/latest/docs
 provider "pgp" {}
 
-# REF: https://github.com/aws-ia/terraform-aws-eks-blueprints/blob/main/docs/faq.md
+# Ref: https://github.com/aws-ia/terraform-aws-eks-blueprints/blob/main/docs/faq.md
 provider "helm" {
   kubernetes {
     host                   = module.eks.cluster_endpoint
